@@ -1,0 +1,69 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+  echo "Invalid argument"
+  exit
+fi
+
+regexSingle='.+[0-9]+$'
+regexMultiple='.+\[([0-9]+,)+[0-9]+\]$'
+regexRange='.+\[[0-9]+-[0-9]+\]$'
+
+if [[ ! $1 =~ $regexSingle ]] && [[ ! $1 =~ $regexMultiple ]] && [[ ! $1 =~ $regexRange ]]; then
+  echo "Invalid format"
+  exit
+fi 
+
+baseHost=$( echo "$1" | cut -d "[" -f1)
+hosts=()
+
+########### SINGLE HOST #######################
+# Example: jssh my-host000
+if [[ $1 =~ $regexSingle ]]; then
+  echo "Single host"
+  hosts+=$1
+fi
+
+
+########### MULTIPLE  HOSTS ###################
+# Example: jssh my-host[000,002,005]
+if [[ $1 =~ $regexMultiple ]]; then
+  echo "Multiple hosts"
+  hostPart=$( echo "$1" | cut -d "[" -f2 | cut -d "]" -f1)
+  IFS="," read -r -a array <<< "$hostPart"
+  for n in "${array[@]}"
+  do
+    host="${baseHost}$n"
+    hosts+=($host)
+  done
+fi
+
+
+########### RANGE OF HOSTS ####################
+# Example: jssh my-host[000-003]
+# Example: jssh my-host[000-3]
+if [[ $1 =~ $regexRange ]]; then
+  echo "Range of hosts"
+  range=$( echo "$1" | cut -d "[" -f2 | cut -d "]" -f1)
+
+  first=$( echo "$range" | cut -d "-" -f1)
+  second=$( echo "$range" | cut -d "-" -f2)
+
+  if [ "$first" -ge "$second" ]; then
+    echo "Range must be ascending"
+    exit 1
+  fi
+
+  #length of number part of host
+  format="%0${#first}g"
+  for n in $(seq -f $format $first $second)
+  do
+    host="${baseHost}$n"
+    hosts+=($host)
+  done
+fi
+
+echo "Connecting to hosts: ${hosts[*]}"
+
+########### CONNECT TO HOSTS ####################
+csshX ${hosts[*]}
