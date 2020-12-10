@@ -1,5 +1,5 @@
 # jssh
-Bash script for easier input to cluster-ssh (CSSHX) if you have numbered hosts
+Bash script for easier input to [cluster-ssh (CSSHX)](https://formulae.brew.sh/formula/csshx) if you have numbered hosts
 
 Supports a single argument in 3 formats
 ## Single Host
