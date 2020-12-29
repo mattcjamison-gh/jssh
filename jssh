@@ -48,6 +48,8 @@ if [[ $1 =~ $regexRange ]]; then
 
   first=$( echo "$range" | cut -d "-" -f1)
   second=$( echo "$range" | cut -d "-" -f2)
+  # Add first and second so first=2000 and second=4 becomes second=2004
+  second=$(($first+$second))
 
   if [ "$first" -ge "$second" ]; then
     echo "Range must be ascending"
