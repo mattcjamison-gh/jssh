@@ -11,11 +11,11 @@ Supports a single argument in 3 formats
 ## Range of Hosts
 For range of hosts, the script will zero-pad to match the length of the first number provided<br>
 
-`jssh my-host[000-007]` will run the command 
+`jssh my-host[00-07]` will run the command 
 
 ```csshX my-host00 my-host01 my-host02 my-host03 my-host04 my-host05 my-host06 my-host07```
 
-`jssh my-host[000-7]` will run the command
+`jssh my-host[00-7]` will run the command
 
 ```csshX my-host00 my-host01 my-host02 my-host03 my-host04 my-host05 my-host06 my-host07```
 
