@@ -48,8 +48,15 @@ if [[ $1 =~ $regexRange ]]; then
 
   first=$( echo "$range" | cut -d "-" -f1)
   second=$( echo "$range" | cut -d "-" -f2)
-  # Add first and second so first=2000 and second=4 becomes second=2004
-  second=$(($first+$second))
+  
+  if [ ${#second} -gt ${#first} ]; then
+    echo "Second number in range cannot be longer in length than the first number in the range"
+    exit 1
+  fi
+  if [ ${#second} -lt ${#first} ]; then
+    # Add first and second so first=2000 and second=4 becomes second=2004
+    second=$(($first+$second))
+  fi
 
   if [ "$first" -ge "$second" ]; then
     echo "Range must be ascending"
