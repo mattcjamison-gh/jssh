@@ -72,7 +72,15 @@ if [[ $1 =~ $regexRange ]]; then
   done
 fi
 
-echo "Connecting to hosts: ${hosts[*]}"
+################### i2cssh #########################
 
-########### CONNECT TO HOSTS ####################
-csshX ${hosts[*]}
+#i2cssh needs commas instead of spaces
+hosts=$( echo "${hosts[*]}" | sed -e 's/[[:blank:]]/,/g')
+echo "Connecting to hosts: ${hosts}"
+i2cssh -b -l jamisonm -m  ${hosts}
+
+################### csshx ##########################
+
+#echo "Connecting to hosts: ${hosts[*]}"
+#csshX ${hosts[*]}
+
