@@ -73,6 +73,7 @@ if [[ $1 =~ $regexRange ]]; then
 fi
 
 ################### i2cssh #########################
+# https://github.com/wouterdebie/i2cssh
 
 #i2cssh needs commas instead of spaces
 hosts=$( echo "${hosts[*]}" | sed -e 's/[[:blank:]]/,/g')
