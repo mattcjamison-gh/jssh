@@ -78,7 +78,7 @@ fi
 #i2cssh needs commas instead of spaces
 hosts=$( echo "${hosts[*]}" | sed -e 's/[[:blank:]]/,/g')
 echo "Connecting to hosts: ${hosts}"
-i2cssh -b -l jamisonm -m  ${hosts}
+i2cssh -b -l <username> -m  ${hosts}
 
 ################### csshx ##########################
 
